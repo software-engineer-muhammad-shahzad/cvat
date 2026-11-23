@@ -1,4 +1,3 @@
-@'
 # Plan: Annotation Analytics
 
 Start time: 2026-11-23 17:00 PKT. Deadline: 2026-11-24 01:00 PKT.
@@ -30,5 +29,12 @@ filtered by task through job and segment. No Python loops over shapes.
 - Counting tracks (LabeledTrack) and tags (LabeledImage). COCO import creates only shapes.
 
 ## Changes to this plan
-(Updated as work goes on, with the reason.)
-'@ | Set-Content -Encoding UTF8 D:\cvat\docs\PLAN.md
+- Step 6 changed from a job filter to a frame range filter (start_frame, stop_frame).
+  Task #1 has a single job covering all 500 frames, so a job filter would always
+  return the same numbers as no filter. A frame range answers a real question:
+  what is labelled in one batch of frames.
+- Building images from source with docker-compose.dev.yml, but starting the stack with
+  the base file only: the dev file publishes the DB port 5432, which Windows blocks.
+- Error state tested with a missing task (404) and a user without access (403).
+  Stopping the backend logs the UI out (CVAT's global behaviour), so it does not
+  reach my page's error state.

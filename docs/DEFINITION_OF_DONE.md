@@ -1,4 +1,3 @@
-@'
 # Definition of Done
 
 Ticked only with evidence beside it.
@@ -16,4 +15,3 @@ Ticked only with evidence beside it.
 
 ## Not finished
 (Filled at the end.)
-'@ | Set-Content -Encoding UTF8 D:\cvat\docs\DEFINITION_OF_DONE.md

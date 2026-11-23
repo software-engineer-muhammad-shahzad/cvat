@@ -1,4 +1,3 @@
-@'
 # Objectives
 
 ## Machine
@@ -32,4 +31,3 @@ median_ms=43.5 min_ms=41.8 max_ms=54.2
 **Median 43.5 ms, spread 41.8 to 54.2 ms. Target met.**
 
 The target turned out generous: the endpoint is one GROUP BY query over about 4,000 shape rows. I measured with a token because Basic auth re-hashes the password on every request, which adds a fixed cost unrelated to the endpoint.
-'@ | Set-Content -Encoding UTF8 D:\cvat\docs\OBJECTIVES.md
