@@ -38,3 +38,23 @@ filtered by task through job and segment. No Python loops over shapes.
 - Error state tested with a missing task (404) and a user without access (403).
   Stopping the backend logs the UI out (CVAT's global behaviour), so it does not
   reach my page's error state.
+
+## Decision record
+
+**Taken:** count in PostgreSQL with one GROUP BY on LabeledShape joined to Label,
+filtered by task through job and segment (cvat/apps/test/views.py).
+
+**Rejected:** reuse CVAT's existing annotation loading (the dataset_manager code behind
+GET /api/tasks/{id}/annotations), load every shape into Python and count there.
+
+**What rejecting it cost:**
+- I only count shapes (LabeledShape). Tracks (LabeledTrack) and tags (LabeledImage) are not
+  counted, because CVAT's loader handles them for me and my query does not. COCO import only
+  creates shapes, so the numbers are correct for this data, but a video task with tracks
+  would be undercounted.
+- My endpoint does not follow CVAT's ViewSet and PolicyEnforcer pattern. I check access
+  with TaskPermission by hand, so if CVAT changes how task access works, this view has to
+  be updated separately.
+
+**What it bought:** one query instead of loading about 4,000 shape objects, median 43.5 ms
+(MO-1), and the count stays fast as tasks grow.
