@@ -18,5 +18,18 @@ Why 200 ms: the count is a single SQL query, so it should return quickly. If it 
 not, the query or its indexes need work, and the measurement will show that.
 
 ## Results
-(Raw output pasted here after measuring.)
+Measured 2026-11-23, token auth (one login, token reused), 1 warm-up request then 5 timed runs.
+
+```
+200 0.054183
+200 0.044029
+200 0.043543
+200 0.041822
+200 0.043300
+median_ms=43.5 min_ms=41.8 max_ms=54.2
+```
+
+**Median 43.5 ms, spread 41.8 to 54.2 ms. Target met.**
+
+The target turned out generous: the endpoint is one GROUP BY query over about 4,000 shape rows. I measured with a token because Basic auth re-hashes the password on every request, which adds a fixed cost unrelated to the endpoint.
 '@ | Set-Content -Encoding UTF8 D:\cvat\docs\OBJECTIVES.md
