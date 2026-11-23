@@ -1,0 +1,34 @@
+@'
+# Plan: Annotation Analytics
+
+Start time: 2026-11-23 17:00 PKT. Deadline: 2026-11-24 01:00 PKT.
+
+## Environment
+- CVAT commit: d4d08dedb5ad7c5e980c0bc7319a7f5587365dad (branch dev-test01)
+- Machine: AMD Ryzen 5 PRO 5650U, 16 GB RAM (15 GB usable), Windows 11 Pro, Docker Desktop
+- Data: COCO 2017 val, first 500 images by file name, 3541 annotations, 80 labels. Task #1.
+  Subset made with a small script kept outside the repo.
+
+## Order of work (8 hours)
+| # | Step | Time |
+|---|------|------|
+| 1 | Read engine models: how Task, Segment, Job, LabeledShape and Label connect | 0:30 |
+| 2 | Backend: new Django app `cvat.apps.test`, endpoint returning per-label counts for a task | 1:30 |
+| 3 | Auth: reject anonymous (401) and users without task access (403), using CVAT's TaskPermission | 0:45 |
+| 4 | Frontend: new page with bar chart (react-chartjs-2, already a dependency), empty and error states | 2:00 |
+| 5 | Speed objective: measure endpoint 5 times, report median and spread | 0:45 |
+| 6 | Filter: counts for a single job (`?job=<id>`) | 0:45 |
+| 7 | Finish docs, Definition of Done evidence, PR, recording | 1:15 |
+
+## Approach
+Count in the database with a single GROUP BY on LabeledShape joined to Label,
+filtered by task through job and segment. No Python loops over shapes.
+
+## Decided to skip
+- Items 8 and 9 (live updates over WebSocket, reconnect). CVAT has no WebSocket
+  layer set up. Adding it is larger than the time available.
+- Counting tracks (LabeledTrack) and tags (LabeledImage). COCO import creates only shapes.
+
+## Changes to this plan
+(Updated as work goes on, with the reason.)
+'@ | Set-Content -Encoding UTF8 D:\cvat\docs\PLAN.md
